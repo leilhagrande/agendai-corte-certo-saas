@@ -6,47 +6,59 @@ import { Check } from "lucide-react";
 const plans = [
   {
     name: "Starter",
-    price: "$9",
-    description: "Perfect for freelancers and solo practitioners",
+    price: "Gratuito",
+    description: "Ideal para barbearias iniciantes",
     features: [
-      "50 appointments/month",
-      "Email notifications",
-      "Calendar integrations",
-      "Client self-booking",
-      "Basic reports"
+      "Até 30 agendamentos/mês",
+      "Sistema de agendamento online",
+      "Dashboard básico",
+      "Integrações externas",
+      "Notificações por email"
     ],
     popular: false,
-    buttonText: "Get Started"
+    buttonText: "Começar Agora"
   },
   {
-    name: "Professional",
-    price: "$29",
-    description: "Ideal for growing businesses and small teams",
+    name: "Essencial",
+    price: "R$29",
+    description: "Para barbearias em crescimento",
     features: [
-      "Unlimited appointments",
-      "SMS reminders",
-      "Custom booking page",
-      "Staff management",
-      "Advanced analytics",
-      "Priority support"
+      "Agendamentos ilimitados",
+      "CRM de clientes",
+      "Notificações por WhatsApp",
+      "Histórico de atendimentos",
+      "Suporte prioritário"
     ],
     popular: true,
-    buttonText: "Start Free Trial"
+    buttonText: "Iniciar Teste Grátis"
   },
   {
-    name: "Enterprise",
-    price: "$79",
-    description: "For large businesses with complex scheduling needs",
+    name: "Pro",
+    price: "R$59",
+    description: "Para barbearias estabelecidas",
     features: [
-      "Everything in Professional",
-      "API access",
-      "White labeling",
-      "Multiple locations",
-      "Advanced integrations",
-      "Dedicated account manager"
+      "Tudo do plano Essencial",
+      "IA para sugestões automáticas",
+      "Automação de marketing",
+      "Análise avançada",
+      "API para integrações"
     ],
     popular: false,
-    buttonText: "Contact Sales"
+    buttonText: "Iniciar Teste Grátis"
+  },
+  {
+    name: "Empresarial",
+    price: "R$129",
+    description: "Para redes de barbearias",
+    features: [
+      "Tudo do plano Pro",
+      "Múltiplas unidades",
+      "Controle de equipe",
+      "Acesso por filial",
+      "Gerente de conta dedicado"
+    ],
+    popular: false,
+    buttonText: "Fale com Vendas"
   }
 ];
 
@@ -57,14 +69,14 @@ const Pricing = () => {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Simple, Transparent Pricing
+              Planos Simples e Transparentes
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-              Choose the perfect plan for your business needs. No hidden fees.
+              Escolha o plano perfeito para a sua barbearia. Sem taxas ocultas.
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-6 mt-12 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 mt-12 md:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan, index) => (
             <div 
               key={index} 
@@ -74,7 +86,7 @@ const Pricing = () => {
             >
               {plan.popular && (
                 <div className="bg-primary py-1 text-center text-sm font-medium text-white">
-                  Most Popular
+                  Mais Popular
                 </div>
               )}
               <div className="flex flex-col space-y-6 bg-card p-6">
@@ -83,7 +95,7 @@ const Pricing = () => {
                   <p className="text-sm text-muted-foreground">{plan.description}</p>
                 </div>
                 <div className="space-y-2">
-                  <div className="text-4xl font-bold">{plan.price}<span className="text-sm font-normal text-muted-foreground">/month</span></div>
+                  <div className="text-4xl font-bold">{plan.price}{plan.price !== "Gratuito" && <span className="text-sm font-normal text-muted-foreground">/mês</span>}</div>
                 </div>
                 <div className="space-y-4">
                   <ul className="space-y-2 text-sm">
@@ -103,7 +115,7 @@ const Pricing = () => {
           ))}
         </div>
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          All plans include a 14-day free trial. No credit card required.
+          Todos os planos incluem teste grátis de 14 dias. Sem cartão de crédito.
         </div>
       </div>
     </section>

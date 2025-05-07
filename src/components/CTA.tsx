@@ -9,22 +9,22 @@ const CTA = () => {
       <div className="container px-4 md:px-6 relative z-10">
         <div className="mx-auto max-w-3xl text-center space-y-8">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            Ready to Transform Your Scheduling Experience?
+            Pronto para Transformar o Agendamento da Sua Barbearia?
           </h2>
           <p className="text-lg text-muted-foreground md:text-xl">
-            Join thousands of businesses that are saving time and delighting their clients with AgendAI.
+            Junte-se a milhares de barbearias que estão economizando tempo e encantando seus clientes com o AgendAi.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Button size="lg" className="gap-1">
-              Start Your Free Trial
+              Comece seu Teste Grátis
               <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline">
-              Schedule a Demo
+              Agendar uma Demonstração
             </Button>
           </div>
           <p className="text-sm text-muted-foreground">
-            No credit card required. 14-day free trial.
+            Não é necessário cartão de crédito. Teste grátis de 14 dias.
           </p>
         </div>
       </div>

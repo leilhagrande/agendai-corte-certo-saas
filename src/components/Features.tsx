@@ -2,43 +2,43 @@
 import React from 'react';
 import { 
   Calendar,
-  BrainCircuit,
+  Clock,
   Bell,
   MessageSquare,
-  LineChart,
-  Smartphone
+  User,
+  Settings
 } from "lucide-react";
 
 const features = [
   {
     icon: <Calendar className="h-6 w-6" />,
-    title: "Smart Scheduling",
-    description: "AI-powered scheduling that automatically finds the best times for appointments based on your availability."
+    title: "Agendamento Inteligente",
+    description: "Sistema de agendamento online que permite que clientes escolham serviços, barbeiros e horários conforme disponibilidade."
   },
   {
-    icon: <BrainCircuit className="h-6 w-6" />,
-    title: "Intelligent Insights",
-    description: "Get AI-powered insights about your scheduling patterns and client preferences."
+    icon: <User className="h-6 w-6" />,
+    title: "CRM de Clientes",
+    description: "Histórico completo de atendimentos, preferências e datas importantes dos seus clientes para um atendimento personalizado."
   },
   {
     icon: <Bell className="h-6 w-6" />,
-    title: "Automated Reminders",
-    description: "Send customized reminders to reduce no-shows and keep your calendar fully booked."
+    title: "Notificações Automáticas",
+    description: "Envie lembretes automáticos por WhatsApp e email para reduzir faltas e manter sua agenda sempre completa."
   },
   {
     icon: <MessageSquare className="h-6 w-6" />,
-    title: "Client Communications",
-    description: "Seamless messaging to confirm details and answer questions before appointments."
+    title: "Avaliações de Clientes",
+    description: "Sistema de feedback que destaca avaliações positivas e permite gestão discreta das negativas para melhorar seu serviço."
   },
   {
-    icon: <LineChart className="h-6 w-6" />,
-    title: "Business Analytics",
-    description: "Track appointment trends, client retention, and revenue with detailed reports."
+    icon: <Clock className="h-6 w-6" />,
+    title: "Controle da Agenda",
+    description: "Painel de administração completo para configurar serviços, barbeiros, horários disponíveis e visualizar agendamentos."
   },
   {
-    icon: <Smartphone className="h-6 w-6" />,
-    title: "Mobile Friendly",
-    description: "Manage your schedule on the go with our responsive mobile application."
+    icon: <Settings className="h-6 w-6" />,
+    title: "Dashboard e Relatórios",
+    description: "Análise detalhada de agendamentos e faturamento por período para tomar decisões estratégicas para seu negócio."
   }
 ];
 
@@ -49,10 +49,10 @@ const Features = () => {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Powerful Features for Your Business
+              Funcionalidades Poderosas para sua Barbearia
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-              Everything you need to streamline your appointment scheduling and grow your business.
+              Tudo o que você precisa para otimizar seus agendamentos e fazer sua barbearia crescer.
             </p>
           </div>
         </div>

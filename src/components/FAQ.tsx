@@ -9,24 +9,24 @@ import {
 
 const faqs = [
   {
-    question: "How does the AI scheduling work?",
-    answer: "Our AI analyzes your scheduling patterns, client preferences, and availability to suggest optimal appointment times. It learns over time to make increasingly accurate recommendations based on your business's specific needs."
+    question: "Como funciona o sistema de agendamento?",
+    answer: "O cliente acessa o site ou aplicativo da barbearia, escolhe o serviço desejado, seleciona o barbeiro de preferência, visualiza os horários disponíveis e confirma o agendamento. Tanto o cliente quanto a barbearia recebem confirmação imediata."
   },
   {
-    question: "Can I integrate AgendAI with my existing calendar?",
-    answer: "Yes, AgendAI seamlessly integrates with Google Calendar, Microsoft Outlook, Apple Calendar, and other popular calendar applications. This ensures all your appointments are synced across platforms."
+    question: "O AgendAi integra com o meu calendário atual?",
+    answer: "Sim, o AgendAi se integra facilmente com Google Calendar, Microsoft Outlook e outros calendários populares, garantindo que todos os seus compromissos estejam sincronizados em todas as plataformas."
   },
   {
-    question: "How do clients book appointments?",
-    answer: "Clients can book through your personalized booking page, which can be embedded on your website or shared via a link. They'll see your real-time availability and can select convenient time slots."
+    question: "Como os clientes fazem o agendamento?",
+    answer: "Os clientes podem agendar através da sua página personalizada de agendamento, que pode ser incorporada ao seu site ou compartilhada via link. Eles verão sua disponibilidade em tempo real e poderão selecionar horários convenientes."
   },
   {
-    question: "What if I need to reschedule an appointment?",
-    answer: "You can easily reschedule appointments through the dashboard. The system will automatically notify the client of the change and suggest alternative times based on your availability."
+    question: "E se eu precisar reagendar ou cancelar um horário?",
+    answer: "Você pode facilmente reagendar ou cancelar horários pelo painel administrativo. O sistema notificará automaticamente o cliente sobre a mudança e, quando apropriado, sugerirá horários alternativos com base na sua disponibilidade."
   },
   {
-    question: "Is my data secure with AgendAI?",
-    answer: "Absolutely. We use bank-level encryption to protect your data. We are GDPR compliant and never share your information with third parties without your explicit consent."
+    question: "Meus dados estão seguros no AgendAi?",
+    answer: "Absolutamente. Utilizamos criptografia de nível bancário para proteger seus dados. Somos compatíveis com a LGPD e nunca compartilhamos suas informações com terceiros sem o seu consentimento explícito."
   }
 ];
 
@@ -37,10 +37,10 @@ const FAQ = () => {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-              Frequently Asked Questions
+              Perguntas Frequentes
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground">
-              Find answers to common questions about AgendAI and how it can help your business.
+              Encontre respostas para perguntas comuns sobre o AgendAi e como ele pode ajudar sua barbearia.
             </p>
           </div>
         </div>
@@ -58,7 +58,7 @@ const FAQ = () => {
         </div>
         <div className="mt-12 text-center">
           <p className="text-muted-foreground">
-            Still have questions? <a href="#contact" className="text-primary hover:underline">Contact our support team</a>
+            Ainda tem dúvidas? <a href="#contact" className="text-primary hover:underline">Entre em contato com nosso suporte</a>
           </p>
         </div>
       </div>

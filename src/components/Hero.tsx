@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, MessageSquare, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -18,12 +19,16 @@ const Hero = () => {
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Button size="lg" className="gap-1">
-                Comece Agora
-                <ArrowRight className="h-4 w-4" />
+              <Button size="lg" className="gap-1" asChild>
+                <Link to="/cadastro">
+                  Comece Agora
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </Button>
-              <Button size="lg" variant="outline">
-                Assista Demo
+              <Button size="lg" variant="outline" asChild>
+                <Link to="/demo">
+                  Assista Demo
+                </Link>
               </Button>
             </div>
             <div className="flex items-center gap-4 pt-4">

@@ -48,8 +48,12 @@ const Navbar = () => {
         
         {!isMobile ? (
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm">Entrar</Button>
-            <Button size="sm">Cadastrar</Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/login">Entrar</Link>
+            </Button>
+            <Button size="sm" asChild>
+              <Link to="/cadastro">Cadastrar</Link>
+            </Button>
           </div>
         ) : (
           <Button
@@ -78,8 +82,12 @@ const Navbar = () => {
               </a>
             ))}
             <div className="flex flex-col gap-2 mt-4 px-4">
-              <Button variant="outline" size="sm">Entrar</Button>
-              <Button size="sm">Cadastrar</Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>Entrar</Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link to="/cadastro" onClick={() => setMobileMenuOpen(false)}>Cadastrar</Link>
+              </Button>
             </div>
           </nav>
         </div>

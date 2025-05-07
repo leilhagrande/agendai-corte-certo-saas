@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CTA = () => {
   return (
@@ -15,12 +16,16 @@ const CTA = () => {
             Junte-se a milhares de barbearias que estão economizando tempo e encantando seus clientes com o AgendAi.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Button size="lg" className="gap-1">
-              Comece seu Teste Grátis
-              <ArrowRight className="h-4 w-4" />
+            <Button size="lg" className="gap-1" asChild>
+              <Link to="/cadastro">
+                Comece seu Teste Grátis
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </Button>
-            <Button size="lg" variant="outline">
-              Agendar uma Demonstração
+            <Button size="lg" variant="outline" asChild>
+              <Link to="/demo">
+                Agendar uma Demonstração
+              </Link>
             </Button>
           </div>
           <p className="text-sm text-muted-foreground">

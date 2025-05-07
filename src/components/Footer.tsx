@@ -15,7 +15,7 @@ const Footer = () => {
               <span className="font-bold text-xl">AgendAI</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Simplifying scheduling for businesses with the power of AI.
+              Simplificando agendamentos para barbearias com o poder da IA.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-muted-foreground hover:text-foreground">
@@ -41,35 +41,35 @@ const Footer = () => {
             </div>
           </div>
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">Product</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider">Produto</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#features" className="text-muted-foreground hover:text-foreground">Features</a></li>
-              <li><a href="#pricing" className="text-muted-foreground hover:text-foreground">Pricing</a></li>
-              <li><a href="#testimonials" className="text-muted-foreground hover:text-foreground">Testimonials</a></li>
+              <li><a href="#features" className="text-muted-foreground hover:text-foreground">Funcionalidades</a></li>
+              <li><a href="#pricing" className="text-muted-foreground hover:text-foreground">Preços</a></li>
+              <li><a href="#testimonials" className="text-muted-foreground hover:text-foreground">Depoimentos</a></li>
               <li><a href="#faq" className="text-muted-foreground hover:text-foreground">FAQ</a></li>
             </ul>
           </div>
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider">Company</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider">Empresa</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="text-muted-foreground hover:text-foreground">About</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground">Sobre</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-foreground">Blog</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground">Careers</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground">Press</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground">Carreiras</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground">Imprensa</a></li>
             </ul>
           </div>
           <div className="space-y-4">
             <h4 className="text-sm font-bold uppercase tracking-wider">Legal</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="text-muted-foreground hover:text-foreground">Terms</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground">Privacy</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground">Termos</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground">Privacidade</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-foreground">Cookies</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground">Contact</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground">Contato</a></li>
             </ul>
           </div>
         </div>
         <div className="mt-12 border-t pt-6 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} AgendAI. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} AgendAI. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

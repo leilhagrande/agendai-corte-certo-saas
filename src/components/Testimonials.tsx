@@ -5,27 +5,27 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "AgendAI has completely transformed my salon business. I've reduced no-shows by 75% and increased bookings by 30%.",
-    author: "Sarah Johnson",
-    role: "Hair Salon Owner",
+    quote: "O AgendAi transformou completamente meu negócio de barbearia. Reduzi faltas em 75% e aumentei os agendamentos em 30%.",
+    author: "Alexandre Silva",
+    role: "Dono de Barbearia",
     rating: 5
   },
   {
-    quote: "The AI-powered scheduling suggestions have helped me optimize my calendar like never before. I'm now seeing 5 more clients weekly.",
-    author: "Dr. Michael Chen",
-    role: "Dentist",
+    quote: "As sugestões de agendamento com IA me ajudaram a otimizar minha agenda como nunca antes. Agora estou atendendo 5 clientes a mais por semana.",
+    author: "Miguel Costa",
+    role: "Barbeiro Autônomo",
     rating: 5
   },
   {
-    quote: "As a massage therapist, my schedule used to be a mess. Now with AgendAI, everything runs smoothly and my clients love the easy booking process.",
-    author: "Emma Rodriguez",
-    role: "Massage Therapist",
+    quote: "Como barbeiro, minha agenda costumava ser uma bagunça. Agora com o AgendAi, tudo funciona perfeitamente e meus clientes adoram a facilidade de agendamento.",
+    author: "Eduardo Martins",
+    role: "Barbeiro",
     rating: 5
   },
   {
-    quote: "The automated reminders have saved my small clinic countless hours of phone calls. Best investment for my practice this year.",
-    author: "Thomas Wright",
-    role: "Chiropractor",
+    quote: "Os lembretes automáticos economizaram inúmeras horas de ligações telefônicas para minha barbearia. Melhor investimento para meu negócio este ano.",
+    author: "Thomas Oliveira",
+    role: "Gerente de Barbearia",
     rating: 5
   }
 ];
@@ -37,10 +37,10 @@ const Testimonials = () => {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Loved by Businesses
+              Amado por Barbeiros
             </h2>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-              Don't take our word for it. Hear what our customers have to say.
+              Não acredite apenas na nossa palavra. Veja o que nossos clientes têm a dizer.
             </p>
           </div>
         </div>

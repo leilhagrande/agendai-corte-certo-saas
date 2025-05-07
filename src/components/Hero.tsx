@@ -11,19 +11,19 @@ const Hero = () => {
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                Effortlessly Schedule Appointments with <span className="gradient-text">AgendAI</span>
+                Agende Compromissos Facilmente com <span className="gradient-text">AgendAI</span>
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                Boost your business efficiency with our AI-powered scheduling system. Save time and increase client satisfaction.
+                Aumente a eficiência do seu negócio com nosso sistema de agendamento com IA. Economize tempo e aumente a satisfação dos clientes.
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" className="gap-1">
-                Get Started
+                Comece Agora
                 <ArrowRight className="h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline">
-                Watch Demo
+                Assista Demo
               </Button>
             </div>
             <div className="flex items-center gap-4 pt-4">
@@ -33,7 +33,7 @@ const Hero = () => {
                 ))}
               </div>
               <div className="text-sm text-muted-foreground">
-                Join 10,000+ businesses using AgendAI
+                Junte-se a mais de 10.000 barbearias usando o AgendAI
               </div>
             </div>
           </div>

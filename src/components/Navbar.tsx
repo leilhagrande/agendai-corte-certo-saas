@@ -14,9 +14,9 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Testimonials", href: "#testimonials" },
+    { label: "Funcionalidades", href: "#features" },
+    { label: "Preços", href: "#pricing" },
+    { label: "Depoimentos", href: "#testimonials" },
     { label: "FAQ", href: "#faq" },
   ];
 
@@ -48,8 +48,8 @@ const Navbar = () => {
         
         {!isMobile ? (
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm">Log in</Button>
-            <Button size="sm">Sign up</Button>
+            <Button variant="ghost" size="sm">Entrar</Button>
+            <Button size="sm">Cadastrar</Button>
           </div>
         ) : (
           <Button
@@ -78,8 +78,8 @@ const Navbar = () => {
               </a>
             ))}
             <div className="flex flex-col gap-2 mt-4 px-4">
-              <Button variant="outline" size="sm">Log in</Button>
-              <Button size="sm">Sign up</Button>
+              <Button variant="outline" size="sm">Entrar</Button>
+              <Button size="sm">Cadastrar</Button>
             </div>
           </nav>
         </div>

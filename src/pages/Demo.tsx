@@ -1,15 +1,35 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 
 const Demo = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [business, setBusiness] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Demo request logic would go here
+    setLoading(true);
+    
+    // Simulação de envio do formulário (em um ambiente real, isso seria uma chamada de API)
+    setTimeout(() => {
+      // Notificar usuário
+      toast.success("Solicitação enviada com sucesso! Entraremos em contato em breve.");
+      
+      // Redirecionar para a página inicial após o envio
+      navigate("/");
+      
+      setLoading(false);
+    }, 1500);
   };
 
   return (
@@ -33,27 +53,62 @@ const Demo = () => {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">Nome completo</label>
-              <Input id="name" type="text" placeholder="Seu nome" required />
+              <Input 
+                id="name" 
+                type="text" 
+                placeholder="Seu nome" 
+                required 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">E-mail</label>
-              <Input id="email" type="email" placeholder="seu@email.com" required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="seu@email.com" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <label htmlFor="phone" className="text-sm font-medium">Telefone</label>
-              <Input id="phone" type="tel" placeholder="(11) 99999-9999" required />
+              <Input 
+                id="phone" 
+                type="tel" 
+                placeholder="(11) 99999-9999" 
+                required 
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <label htmlFor="business" className="text-sm font-medium">Nome da Barbearia</label>
-              <Input id="business" type="text" placeholder="Barbearia Exemplo" required />
+              <Input 
+                id="business" 
+                type="text" 
+                placeholder="Barbearia Exemplo" 
+                required 
+                value={business}
+                onChange={(e) => setBusiness(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <label htmlFor="message" className="text-sm font-medium">Mensagem (opcional)</label>
-              <Textarea id="message" placeholder="Conte-nos um pouco sobre sua barbearia e suas necessidades" />
+              <Textarea 
+                id="message" 
+                placeholder="Conte-nos um pouco sobre sua barbearia e suas necessidades" 
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full">Solicitar Demonstração</Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Enviando..." : "Solicitar Demonstração"}
+            </Button>
             <div className="text-center text-sm">
               Prefere criar uma conta agora?{" "}
               <Link to="/cadastro" className="text-primary hover:underline">

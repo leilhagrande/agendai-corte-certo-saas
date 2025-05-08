@@ -1,14 +1,42 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Login logic would go here
+    setLoading(true);
+    
+    // Simulação de login (em um ambiente real, isso seria uma chamada de API)
+    setTimeout(() => {
+      // Por enquanto, apenas simular autenticação e permitir login com qualquer credencial
+      const user = { 
+        id: "1", 
+        name: "Usuário Teste", 
+        email 
+      };
+      
+      // Salvar informações do usuário no localStorage
+      localStorage.setItem("agendai_user", JSON.stringify(user));
+      localStorage.setItem("agendai_authenticated", "true");
+      
+      // Notificar usuário
+      toast.success("Login realizado com sucesso!");
+      
+      // Redirecionar para uma página após login
+      navigate("/");
+      
+      setLoading(false);
+    }, 1500);
   };
 
   return (
@@ -32,7 +60,14 @@ const Login = () => {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">E-mail</label>
-              <Input id="email" type="email" placeholder="seu@email.com" required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="seu@email.com" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -41,11 +76,19 @@ const Login = () => {
                   Esqueceu a senha?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input 
+                id="password" 
+                type="password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full">Entrar</Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Entrando..." : "Entrar"}
+            </Button>
             <div className="text-center text-sm">
               Ainda não tem conta?{" "}
               <Link to="/cadastro" className="text-primary hover:underline">

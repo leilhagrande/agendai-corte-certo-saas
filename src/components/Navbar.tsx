@@ -1,16 +1,26 @@
 
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Moon, Sun, User, LogIn } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Navbar = () => {
   const isMobile = useIsMobile();
+  const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   const navItems = [
@@ -46,25 +56,45 @@ const Navbar = () => {
           )}
         </div>
         
-        {!isMobile ? (
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/login">Entrar</Link>
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          
+          {!isMobile ? (
+            <div className="flex items-center gap-4">
+              {isAuthenticated ? (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/dashboard">
+                      <User size={18} className="mr-2" />
+                      Dashboard
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={handleLogout}>
+                    Sair
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/login">Entrar</Link>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <Link to="/cadastro">Cadastrar</Link>
+                  </Button>
+                </>
+              )}
+            </div>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={toggleMobileMenu}
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </Button>
-            <Button size="sm" asChild>
-              <Link to="/cadastro">Cadastrar</Link>
-            </Button>
-          </div>
-        ) : (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={toggleMobileMenu}
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </Button>
-        )}
+          )}
+        </div>
       </div>
       
       {/* Mobile menu */}
@@ -81,14 +111,33 @@ const Navbar = () => {
                 {item.label}
               </a>
             ))}
-            <div className="flex flex-col gap-2 mt-4 px-4">
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>Entrar</Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link to="/cadastro" onClick={() => setMobileMenuOpen(false)}>Cadastrar</Link>
-              </Button>
-            </div>
+            <div className="border-t my-2"></div>
+            {isAuthenticated ? (
+              <>
+                <Button variant="ghost" className="justify-start" asChild>
+                  <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                    <User size={18} className="mr-2" />
+                    Dashboard
+                  </Link>
+                </Button>
+                <Button variant="ghost" className="justify-start" onClick={() => {
+                  handleLogout();
+                  setMobileMenuOpen(false);
+                }}>
+                  <LogIn size={18} className="mr-2" />
+                  Sair
+                </Button>
+              </>
+            ) : (
+              <div className="flex flex-col gap-2 mt-4 px-4">
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)}>Entrar</Link>
+                </Button>
+                <Button size="sm" asChild>
+                  <Link to="/cadastro" onClick={() => setMobileMenuOpen(false)}>Cadastrar</Link>
+                </Button>
+              </div>
+            )}
           </nav>
         </div>
       )}

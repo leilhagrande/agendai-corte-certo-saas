@@ -2,89 +2,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+ 
 @layer base {
   :root {
-    --background: 224 71% 99%;
-    --foreground: 224 71% 4%;
-
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 224 71% 4%;
-
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
-
-    --primary: 252 56% 57%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 6% 23%;
-
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 6% 44%;
-
-    --accent: 252 56% 97%;
-    --accent-foreground: 252 56% 57%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 252 56% 57%;
-
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 262.1 83.3% 57.8%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
   }
-
+ 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 224 71% 99%;
-
-    --card: 224 71% 4%;
-    --card-foreground: 224 71% 99%;
-
-    --popover: 224 71% 4%;
-    --popover-foreground: 224 71% 99%;
-
-    --primary: 252 56% 57%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 220 6% 10%;
-    --secondary-foreground: 220 14% 96%;
-
-    --muted: 220 6% 10%;
-    --muted-foreground: 220 14% 70%;
-
-    --accent: 252 56% 16%;
-    --accent-foreground: 252 56% 57%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 262.1 73.3% 57.8%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 252 56% 57%;
+    --ring: 262.1 73.3% 57.8%;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-primary to-violet-400 bg-clip-text text-transparent;
 }
 
 .hero-pattern {
-  background-image: 
-    radial-gradient(circle at 30% 20%, rgba(var(--color-primary), 0.1) 0%, transparent 30%),
-    radial-gradient(circle at 70% 60%, rgba(var(--color-primary), 0.08) 0%, transparent 40%);
-}
-
-@layer components {
-  .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400;
-  }
+  background-image: radial-gradient(
+    circle at 100% 0%, 
+    rgba(155, 135, 245, 0.1) 0%, 
+    rgba(155, 135, 245, 0.05) 25%, 
+    transparent 75%
+  );
 }

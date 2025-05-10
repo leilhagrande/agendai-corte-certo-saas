@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Calendar, 
   Users, 
@@ -11,7 +11,8 @@ import {
   Menu, 
   X,
   Sun,
-  Moon
+  Moon,
+  LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -27,6 +28,7 @@ import {
   SidebarProvider,
   SidebarTrigger
 } from '@/components/ui/sidebar';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface BarberDashboardLayoutProps {
   children: React.ReactNode;
@@ -34,8 +36,19 @@ interface BarberDashboardLayoutProps {
 
 const BarberDashboardLayout: React.FC<BarberDashboardLayoutProps> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Verificar se o usuário é um barbeiro ou admin
+  const isBarber = user?.role === "barber" || user?.role === "admin";
+
+  // Handle logout and navigate to home
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const navItems = [
     {
@@ -76,6 +89,27 @@ const BarberDashboardLayout: React.FC<BarberDashboardLayoutProps> = ({ children 
     }
   ];
 
+  // Redirect to login if not a barber
+  useEffect(() => {
+    if (user && !isBarber) {
+      navigate('/');
+    }
+  }, [user, isBarber, navigate]);
+
+  if (!isBarber) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Acesso Restrito</h1>
+          <p className="mb-6">Esta área é reservada para barbeiros.</p>
+          <Button asChild>
+            <Link to="/">Voltar para Home</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full flex-col bg-background">
@@ -98,9 +132,14 @@ const BarberDashboardLayout: React.FC<BarberDashboardLayoutProps> = ({ children 
               </Link>
             </div>
 
-            <Button variant="ghost" size="icon" onClick={toggleTheme}>
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" onClick={toggleTheme}>
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </Button>
+              <Button variant="ghost" size="icon" onClick={handleLogout} title="Sair">
+                <LogOut size={18} />
+              </Button>
+            </div>
           </div>
 
           {/* Mobile menu */}
@@ -160,15 +199,29 @@ const BarberDashboardLayout: React.FC<BarberDashboardLayoutProps> = ({ children 
             </SidebarContent>
 
             <SidebarFooter className="p-4 mt-auto">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full justify-start"
-                onClick={toggleTheme}
-              >
-                {theme === 'dark' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
-                {theme === 'dark' ? 'Modo Claro' : 'Modo Escuro'}
-              </Button>
+              <div className="flex flex-col gap-2">
+                <div className="text-sm font-medium mb-2">
+                  {user?.name || user?.email}
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full justify-start mb-2"
+                  onClick={toggleTheme}
+                >
+                  {theme === 'dark' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
+                  {theme === 'dark' ? 'Modo Claro' : 'Modo Escuro'}
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full justify-start text-destructive hover:text-destructive"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sair
+                </Button>
+              </div>
             </SidebarFooter>
           </Sidebar>
 

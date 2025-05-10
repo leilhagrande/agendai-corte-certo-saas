@@ -24,7 +24,10 @@ import Profile from "./pages/Profile";
 // Novas páginas do Barber Dashboard
 import BarberAgenda from "./pages/barber/BarberAgenda";
 import BarberClientes from "./pages/barber/BarberClientes";
+import BarberServicos from "./pages/barber/BarberServicos";
 import BarberRelatorios from "./pages/barber/BarberRelatorios";
+import BarberHorarios from "./pages/barber/BarberHorarios";
+import BarberConfiguracoes from "./pages/barber/BarberConfiguracoes";
 
 // Criando o QueryClient fora do componente para evitar recriações
 const queryClient = new QueryClient();
@@ -78,13 +81,13 @@ const AppContent = () => {
       <Route path="/agendamento/:id" element={<ProtectedRoute><AppointmentDetails /></ProtectedRoute>} />
       <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       
-      {/* Novas rotas do Barber Dashboard */}
+      {/* Rotas do Barber Dashboard */}
       <Route path="/barber/agenda" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
       <Route path="/barber/clientes" element={<BarberRoute><BarberClientes /></BarberRoute>} />
-      <Route path="/barber/servicos" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
+      <Route path="/barber/servicos" element={<BarberRoute><BarberServicos /></BarberRoute>} />
       <Route path="/barber/relatorios" element={<BarberRoute><BarberRelatorios /></BarberRoute>} />
-      <Route path="/barber/horarios" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
-      <Route path="/barber/configuracoes" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
+      <Route path="/barber/horarios" element={<BarberRoute><BarberHorarios /></BarberRoute>} />
+      <Route path="/barber/configuracoes" element={<BarberRoute><BarberConfiguracoes /></BarberRoute>} />
       
       {/* Rota de fallback */}
       <Route path="*" element={<NotFound />} />

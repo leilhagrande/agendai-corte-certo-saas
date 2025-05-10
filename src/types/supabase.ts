@@ -1,5 +1,7 @@
 
 import { Database } from "@/integrations/supabase/types";
+import { User as AuthUser } from "@supabase/supabase-js";
+import { UserRole } from "@/types";
 
 // Profile types
 export type Profile = {
@@ -9,6 +11,13 @@ export type Profile = {
   avatar_url: string | null;
   created_at: string;
   updated_at: string;
+}
+
+// Define our base User type
+export type User = AuthUser & {
+  role?: UserRole;
+  name?: string;
+  email?: string;
 }
 
 // Extend the User type with profile information

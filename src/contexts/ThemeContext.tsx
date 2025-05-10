@@ -13,16 +13,23 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   // Inicializa com o tema salvo ou o tema do sistema
   const [theme, setTheme] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('agendai_theme');
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      return savedTheme;
+    // Verifica se está no ambiente do navegador
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('agendai_theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        return savedTheme;
+      }
+      // Usa preferência do sistema como fallback
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    // Usa preferência do sistema como fallback
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Default para SSR
+    return 'light';
   });
 
   // Atualiza o DOM quando o tema muda
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const root = window.document.documentElement;
     
     if (theme === 'dark') {

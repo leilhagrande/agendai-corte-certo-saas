@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,6 +21,7 @@ import NewAppointment from "./pages/NewAppointment";
 import AppointmentDetails from "./pages/AppointmentDetails";
 import Profile from "./pages/Profile";
 
+// Criando o QueryClient fora do componente para evitar recriações
 const queryClient = new QueryClient();
 
 // Componente para rotas protegidas
@@ -60,22 +62,26 @@ const AppContent = () => {
   );
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
+const App = () => {
+  return (
+    <React.StrictMode>
       <ThemeProvider>
-        <AuthProvider>
-          <AppointmentProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <AppContent />
-            </TooltipProvider>
-          </AppointmentProvider>
-        </AuthProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <AppointmentProvider>
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
+                  <AppContent />
+                </TooltipProvider>
+              </AppointmentProvider>
+            </AuthProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
       </ThemeProvider>
-    </BrowserRouter>
-  </QueryClientProvider>
-);
+    </React.StrictMode>
+  );
+};
 
 export default App;

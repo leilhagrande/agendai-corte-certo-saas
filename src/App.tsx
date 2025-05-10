@@ -21,6 +21,11 @@ import NewAppointment from "./pages/NewAppointment";
 import AppointmentDetails from "./pages/AppointmentDetails";
 import Profile from "./pages/Profile";
 
+// Novas páginas do Barber Dashboard
+import BarberAgenda from "./pages/barber/BarberAgenda";
+import BarberClientes from "./pages/barber/BarberClientes";
+import BarberRelatorios from "./pages/barber/BarberRelatorios";
+
 // Criando o QueryClient fora do componente para evitar recriações
 const queryClient = new QueryClient();
 
@@ -41,6 +46,23 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
+// Componente BarberRoute para rotas específicas da barbearia
+const BarberRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+  
+  // Verifica se está autenticado e se o usuário tem a role 'barber' ou 'admin'
+  const isBarber = user?.role === 'barber' || user?.role === 'admin';
+  return isAuthenticated && isBarber ? <>{children}</> : <Navigate to="/login" replace />;
+};
+
 // Componente AppContent para usar os hooks de contexto
 const AppContent = () => {
   return (
@@ -50,11 +72,19 @@ const AppContent = () => {
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/demo" element={<Demo />} />
       
-      {/* Rotas protegidas */}
+      {/* Rotas protegidas para clientes */}
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/agendar" element={<ProtectedRoute><NewAppointment /></ProtectedRoute>} />
       <Route path="/agendamento/:id" element={<ProtectedRoute><AppointmentDetails /></ProtectedRoute>} />
       <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      
+      {/* Novas rotas do Barber Dashboard */}
+      <Route path="/barber/agenda" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
+      <Route path="/barber/clientes" element={<BarberRoute><BarberClientes /></BarberRoute>} />
+      <Route path="/barber/servicos" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
+      <Route path="/barber/relatorios" element={<BarberRoute><BarberRelatorios /></BarberRoute>} />
+      <Route path="/barber/horarios" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
+      <Route path="/barber/configuracoes" element={<BarberRoute><BarberAgenda /></BarberRoute>} />
       
       {/* Rota de fallback */}
       <Route path="*" element={<NotFound />} />

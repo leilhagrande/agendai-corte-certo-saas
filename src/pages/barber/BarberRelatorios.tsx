@@ -3,16 +3,10 @@ import React, { useState } from 'react';
 import { format, startOfWeek, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  ChartContainer, 
-  ChartTooltip, 
-  ChartTooltipContent, 
-  ChartLegend, 
-  ChartLegendContent 
-} from '@/components/ui/chart';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip, TooltipProps } from 'recharts';
 import BarberDashboardLayout from '@/components/BarberDashboardLayout';
+import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 
 const generateWeekDays = () => {
   const startDate = startOfWeek(new Date(), { weekStartsOn: 1 });
@@ -41,6 +35,23 @@ const mockServicesData = [
   { name: 'Degradê', valor: 20 },
   { name: 'Tintura', valor: 10 },
 ];
+
+// Custom tooltip component to avoid type errors
+const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameType>) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-background border border-border p-2 rounded-md shadow-md">
+        <p className="text-sm font-medium">{`${label}`}</p>
+        {payload.map((entry, index) => (
+          <p key={`item-${index}`} className="text-sm" style={{ color: entry.color }}>
+            {`${entry.name}: ${entry.value}`}
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
 
 const BarberRelatorios = () => {
   const [periodo, setPeriodo] = useState('semana');
@@ -136,14 +147,10 @@ const BarberRelatorios = () => {
               </Select>
             </CardHeader>
             <CardContent className="pl-2">
-              <ChartContainer 
-                config={{
-                  atendimentos: { label: 'Atendimentos', color: 'hsl(var(--primary))' }
-                }} 
-                className="aspect-[4/3]"
-              >
-                <ResponsiveContainer>
+              <div className="aspect-[4/3]">
+                <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={mockWeekData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis 
                       dataKey="day" 
                       tickLine={false} 
@@ -155,22 +162,11 @@ const BarberRelatorios = () => {
                       axisLine={false}
                       fontSize={12}
                     />
-                    <ChartTooltip
-                      content={(props) => (
-                        <ChartTooltipContent 
-                          {...props}
-                          formatter={(value) => [value, 'Atendimentos']}
-                          labelFormatter={(label) => `${label}`}
-                        />
-                      )}
-                    />
-                    <Bar dataKey="atendimentos" fill="var(--color-atendimentos)" radius={[4, 4, 0, 0]} />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar dataKey="atendimentos" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
-                <ChartLegend>
-                  <ChartLegendContent />
-                </ChartLegend>
-              </ChartContainer>
+              </div>
             </CardContent>
           </Card>
           
@@ -192,13 +188,8 @@ const BarberRelatorios = () => {
               </Select>
             </CardHeader>
             <CardContent className="pl-2">
-              <ChartContainer 
-                config={{
-                  receita: { label: 'Receita', color: 'rgb(34, 197, 94)' }
-                }} 
-                className="aspect-[4/3]"
-              >
-                <ResponsiveContainer>
+              <div className="aspect-[4/3]">
+                <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={mockWeekData}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis 
@@ -212,15 +203,7 @@ const BarberRelatorios = () => {
                       axisLine={false}
                       fontSize={12}
                     />
-                    <ChartTooltip
-                      content={(props) => (
-                        <ChartTooltipContent 
-                          {...props}
-                          formatter={(value) => [`R$ ${value}`, 'Receita']}
-                          labelFormatter={(label) => `${label}`}
-                        />
-                      )}
-                    />
+                    <Tooltip content={<CustomTooltip />} />
                     <Line 
                       type="monotone" 
                       dataKey="receita" 
@@ -231,10 +214,7 @@ const BarberRelatorios = () => {
                     />
                   </LineChart>
                 </ResponsiveContainer>
-                <ChartLegend>
-                  <ChartLegendContent />
-                </ChartLegend>
-              </ChartContainer>
+              </div>
             </CardContent>
           </Card>
           
@@ -244,13 +224,8 @@ const BarberRelatorios = () => {
               <CardDescription>Distribuição de serviços por quantidade</CardDescription>
             </CardHeader>
             <CardContent className="pl-2">
-              <ChartContainer 
-                config={{
-                  valor: { label: 'Quantidade', color: 'hsl(var(--primary))' }
-                }} 
-                className="aspect-auto h-80"
-              >
-                <ResponsiveContainer>
+              <div className="aspect-auto h-80">
+                <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={mockServicesData} layout="vertical">
                     <XAxis type="number" tickLine={false} axisLine={false} />
                     <YAxis 
@@ -261,21 +236,11 @@ const BarberRelatorios = () => {
                       width={150}
                       fontSize={12}
                     />
-                    <ChartTooltip
-                      content={(props) => (
-                        <ChartTooltipContent 
-                          {...props}
-                          formatter={(value, name) => [value, 'Quantidade']}
-                        />
-                      )}
-                    />
-                    <Bar dataKey="valor" fill="var(--color-valor)" radius={[0, 4, 4, 0]} />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar dataKey="valor" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
-                <ChartLegend>
-                  <ChartLegendContent />
-                </ChartLegend>
-              </ChartContainer>
+              </div>
             </CardContent>
           </Card>
         </div>

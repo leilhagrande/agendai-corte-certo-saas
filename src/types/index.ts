@@ -65,7 +65,7 @@ export interface Appointment {
   serviceName: string;
   barbershopId: string;
   date: Date;
-  status: AppointmentStatus | "scheduled" | "completed" | "cancelled" | "pending" | "confirmed";
+  status: AppointmentStatus;
   price: number;
 }
 
@@ -97,4 +97,11 @@ export interface Payment {
   amount: number;
   date: Date;
   status: "pending" | "completed" | "failed";
+}
+
+// Tipo para chart tooltip
+export interface ChartTooltipProps {
+  active?: boolean;
+  payload?: Array<any>;
+  label?: string;
 }

@@ -10,6 +10,7 @@ import { useAppointment } from "@/contexts/AppointmentContext";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { AppointmentStatus } from "@/types";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -32,7 +33,7 @@ const Dashboard = () => {
       if (success) {
         // Atualizar lista local
         setAppointments(prev => prev.map(app => 
-          app.id === id ? {...app, status: "cancelled"} : app
+          app.id === id ? {...app, status: AppointmentStatus.CANCELLED} : app
         ));
       }
     }
@@ -40,15 +41,15 @@ const Dashboard = () => {
 
   // Filtrar agendamentos por status
   const upcomingAppointments = appointments.filter(app => 
-    app.status === "scheduled" && new Date(app.date) > new Date()
+    app.status === AppointmentStatus.SCHEDULED && new Date(app.date) > new Date()
   );
   
   const pastAppointments = appointments.filter(app => 
-    app.status === "completed" || new Date(app.date) < new Date()
+    app.status === AppointmentStatus.COMPLETED || new Date(app.date) < new Date()
   );
   
   const cancelledAppointments = appointments.filter(app => 
-    app.status === "cancelled"
+    app.status === AppointmentStatus.CANCELLED
   );
 
   // Selecionar agendamentos com base na aba ativa

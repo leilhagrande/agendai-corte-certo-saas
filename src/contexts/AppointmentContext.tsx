@@ -1,6 +1,5 @@
-
 import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
-import { Appointment, Staff, Service, Subscription, Plan } from "../types";
+import { Appointment, Staff, Service, Subscription, Plan, AppointmentStatus } from "../types";
 import { useAuth } from "./AuthContext";
 import { toast } from "sonner";
 
@@ -184,10 +183,14 @@ export function AppointmentProvider({ children }: { children: ReactNode }) {
     // Carregar agendamentos
     const savedAppointments = localStorage.getItem("agendai_appointments");
     if (savedAppointments) {
-      // Converter strings de data para objetos Date
+      // Converter strings de data para objetos Date e garantir que os status sejam compatíveis
       const parsedAppointments = JSON.parse(savedAppointments).map((app: any) => ({
         ...app,
-        date: new Date(app.date)
+        date: new Date(app.date),
+        // Garantir que o status está dentro dos valores permitidos
+        status: (app.status === "scheduled" || app.status === "completed" || app.status === "cancelled") 
+          ? app.status 
+          : AppointmentStatus.SCHEDULED // valor padrão caso o status seja inválido
       }));
       setAppointments(parsedAppointments);
     }
@@ -312,7 +315,7 @@ export function AppointmentProvider({ children }: { children: ReactNode }) {
       const newAppointment: Appointment = {
         ...appointment,
         id: `app_${Date.now()}`,
-        status: "scheduled"
+        status: AppointmentStatus.SCHEDULED
       };
       
       // Salvar no localStorage
@@ -354,7 +357,7 @@ export function AppointmentProvider({ children }: { children: ReactNode }) {
       
       // Atualizar status do agendamento para cancelado
       const updatedAppointments = appointments.map(app => 
-        app.id === id ? {...app, status: "cancelled"} : app
+        app.id === id ? {...app, status: AppointmentStatus.CANCELLED} : app
       );
       
       localStorage.setItem("agendai_appointments", JSON.stringify(updatedAppointments));

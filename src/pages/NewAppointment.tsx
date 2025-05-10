@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -7,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAppointment } from "@/contexts/AppointmentContext";
-import { Staff, Service, Appointment } from "@/types";
+import { Staff, Service, Appointment, AppointmentStatus } from "@/types";
 import { toast } from "sonner";
 import { format, addDays, isPast, isBefore, startOfDay, addHours, setHours, setMinutes } from "date-fns";
 import { ptBR } from "date-fns/locale";

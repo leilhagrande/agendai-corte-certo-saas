@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Clock, Trash2, ArrowLeft } from "lucide-react";
 import { useAppointment } from "@/contexts/AppointmentContext";
-import { Appointment } from "@/types";
+import { Appointment, AppointmentStatus } from "@/types";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
@@ -46,7 +46,7 @@ const AppointmentDetails = () => {
 
   // Verifica se o agendamento pode ser cancelado (ainda não ocorreu)
   const canBeCancelled = appointment && 
-    appointment.status === "scheduled" && 
+    appointment.status === AppointmentStatus.SCHEDULED && 
     new Date(appointment.date) > new Date();
 
   if (loading) {
@@ -95,9 +95,9 @@ const AppointmentDetails = () => {
               <div>
                 <h3 className="text-sm font-medium text-muted-foreground">Status</h3>
                 <p>{
-                  appointment.status === "scheduled" 
+                  appointment.status === AppointmentStatus.SCHEDULED 
                     ? "Agendado" 
-                    : appointment.status === "completed"
+                    : appointment.status === AppointmentStatus.COMPLETED
                       ? "Concluído"
                       : "Cancelado"
                 }</p>

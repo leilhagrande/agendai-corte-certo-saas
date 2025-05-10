@@ -3,6 +3,12 @@
 
 export type UserRole = "admin" | "barber" | "client";
 
+export enum AppointmentStatus {
+  SCHEDULED = "scheduled",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled"
+}
+
 export interface User {
   id: string;
   name: string;
@@ -57,7 +63,7 @@ export interface Appointment {
   serviceName: string;
   barbershopId: string;
   date: Date;
-  status: "scheduled" | "completed" | "cancelled";
+  status: AppointmentStatus | "scheduled" | "completed" | "cancelled";
   price: number;
 }
 
@@ -90,3 +96,4 @@ export interface Payment {
   date: Date;
   status: "pending" | "completed" | "failed";
 }
+

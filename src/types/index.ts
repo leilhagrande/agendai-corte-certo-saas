@@ -53,6 +53,7 @@ export interface Client {
   name: string;
   email: string;
   phone?: string;
+  avatarUrl?: string;
 }
 
 export interface Appointment {
@@ -67,6 +68,11 @@ export interface Appointment {
   date: Date;
   status: AppointmentStatus;
   price: number;
+  notes?: string;
+  client?: Client;
+  service?: Service;
+  createdAt?: Date;
+  time?: string;
 }
 
 export type PlanType = "Starter" | "Essencial" | "Pro" | "Empresarial";

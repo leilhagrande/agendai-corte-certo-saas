@@ -1,108 +1,104 @@
 
 import React, { useState } from 'react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { Calendar as CalendarIcon, ChevronDown, Search } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { format, addDays } from 'date-fns';
+import { pt } from 'date-fns/locale';
+import { Calendar, ChevronLeft, ChevronRight, Clock, Filter, Plus, User } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { AppointmentStatus } from '@/types';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import BarberDashboardLayout from '@/components/BarberDashboardLayout';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { AppointmentStatus } from '@/types';
 
-const mockAppointments = [
+// Dados mockados para demonstração
+const agendamentos = [
   {
     id: '1',
-    clientName: 'João Silva',
-    time: '09:00',
-    service: 'Corte de Cabelo',
-    duration: 30,
-    status: AppointmentStatus.CONFIRMED || 'confirmed',
-    price: 35
+    horario: '09:00',
+    cliente: 'João Silva',
+    servico: 'Corte de Cabelo',
+    duracao: '30 min',
+    valor: 'R$ 40,00',
+    status: AppointmentStatus.CONFIRMED
   },
   {
     id: '2',
-    clientName: 'Pedro Costa',
-    time: '10:00',
-    service: 'Barba',
-    duration: 20,
-    status: AppointmentStatus.PENDING || 'pending',
-    price: 25
+    horario: '10:00',
+    cliente: 'Carlos Oliveira',
+    servico: 'Barba',
+    duracao: '20 min',
+    valor: 'R$ 30,00',
+    status: AppointmentStatus.PENDING
   },
   {
     id: '3',
-    clientName: 'Carlos Eduardo',
-    time: '11:00',
-    service: 'Corte e Barba',
-    duration: 50,
-    status: AppointmentStatus.CONFIRMED || 'confirmed',
-    price: 60
+    horario: '11:00',
+    cliente: 'Pedro Santos',
+    servico: 'Corte e Barba',
+    duracao: '45 min',
+    valor: 'R$ 65,00',
+    status: AppointmentStatus.CANCELLED
   },
   {
     id: '4',
-    clientName: 'André Santos',
-    time: '12:00',
-    service: 'Corte Degradê',
-    duration: 40,
-    status: AppointmentStatus.CANCELLED || 'cancelled',
-    price: 45
+    horario: '13:30',
+    cliente: 'André Pereira',
+    servico: 'Corte Degradê',
+    duracao: '35 min',
+    valor: 'R$ 50,00',
+    status: AppointmentStatus.CONFIRMED
   },
   {
     id: '5',
-    clientName: 'Lucas Mendes',
-    time: '14:00',
-    service: 'Corte de Cabelo',
-    duration: 30,
-    status: AppointmentStatus.CONFIRMED || 'confirmed',
-    price: 35
+    horario: '14:30',
+    cliente: 'Lucas Mendes',
+    servico: 'Corte de Cabelo',
+    duracao: '30 min',
+    valor: 'R$ 40,00',
+    status: AppointmentStatus.CONFIRMED
   },
   {
     id: '6',
-    clientName: 'Gabriel Oliveira',
-    time: '15:00',
-    service: 'Corte e Barba',
-    duration: 50,
-    status: AppointmentStatus.PENDING || 'pending',
-    price: 60
+    horario: '15:30',
+    cliente: 'Gabriel Costa',
+    servico: 'Barba',
+    duracao: '20 min',
+    valor: 'R$ 30,00',
+    status: AppointmentStatus.PENDING
   },
 ];
 
 const BarberAgenda = () => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const filteredAppointments = mockAppointments.filter(
-    appointment => appointment.clientName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const getStatusBadgeClass = (status: string) => {
-    switch(status) {
-      case 'confirmed':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
-      case 'pending':
-        return 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
-      default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
-    }
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [viewMode, setViewMode] = useState<'dia' | 'semana' | 'mes'>('dia');
+  const [filtroStatus, setFiltroStatus] = useState<string>("todos");
+  
+  // Navegar para o dia anterior
+  const handlePrevDay = () => {
+    setCurrentDate(prev => addDays(prev, -1));
   };
-
-  const getStatusText = (status: string) => {
-    switch(status) {
-      case 'confirmed':
-        return 'Confirmado';
-      case 'pending':
-        return 'Pendente';
-      case 'cancelled':
-        return 'Cancelado';
+  
+  // Navegar para o próximo dia
+  const handleNextDay = () => {
+    setCurrentDate(prev => addDays(prev, 1));
+  };
+  
+  // Filtrar agendamentos por status
+  const agendamentosFiltrados = filtroStatus === "todos" 
+    ? agendamentos 
+    : agendamentos.filter(a => a.status === filtroStatus);
+  
+  // Função para renderizar o badge de status com cor apropriada
+  const renderStatusBadge = (status: AppointmentStatus) => {
+    switch (status) {
+      case AppointmentStatus.CONFIRMED:
+        return <Badge className="bg-green-500">Confirmado</Badge>;
+      case AppointmentStatus.PENDING:
+        return <Badge variant="outline" className="text-yellow-500 border-yellow-500">Pendente</Badge>;
+      case AppointmentStatus.CANCELLED:
+        return <Badge variant="destructive">Cancelado</Badge>;
       default:
-        return status;
+        return <Badge variant="secondary">Desconhecido</Badge>;
     }
   };
 
@@ -114,95 +110,120 @@ const BarberAgenda = () => {
             <h1 className="text-2xl font-bold tracking-tight">Agenda</h1>
             <p className="text-muted-foreground">Gerencie os agendamentos da barbearia.</p>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="justify-start text-left font-normal w-full sm:w-auto"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {format(date, "dd 'de' MMMM", { locale: ptBR })}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={(newDate) => newDate && setDate(newDate)}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-
-            <Button className="w-full sm:w-auto">
-              Novo Agendamento
+          
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Novo Agendamento
+          </Button>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b pb-4">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handlePrevDay}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            
+            <div className="flex items-center gap-2">
+              <Calendar className="h-5 w-5" />
+              <h2 className="text-lg font-medium">
+                {format(currentDate, "EEEE, d 'de' MMMM", { locale: pt })}
+              </h2>
+            </div>
+            
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleNextDay}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Select defaultValue={viewMode} onValueChange={(value) => setViewMode(value as any)}>
+              <SelectTrigger className="w-24">
+                <SelectValue placeholder="Visualização" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dia">Dia</SelectItem>
+                <SelectItem value="semana">Semana</SelectItem>
+                <SelectItem value="mes">Mês</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select defaultValue="todos" onValueChange={setFiltroStatus}>
+              <SelectTrigger className="w-36">
+                <SelectValue placeholder="Filtrar status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos</SelectItem>
+                <SelectItem value={AppointmentStatus.CONFIRMED}>Confirmados</SelectItem>
+                <SelectItem value={AppointmentStatus.PENDING}>Pendentes</SelectItem>
+                <SelectItem value={AppointmentStatus.CANCELLED}>Cancelados</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Button variant="outline" size="icon">
+              <Filter className="h-4 w-4" />
             </Button>
           </div>
         </div>
-
-        <div className="flex items-center space-x-2">
-          <Search className="h-5 w-5 text-muted-foreground" />
-          <Input 
-            placeholder="Procurar por cliente..." 
-            className="flex-1 max-w-md"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              Agendamentos de {format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-            </CardTitle>
-            <CardDescription>
-              {filteredAppointments.length} agendamentos para hoje
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-5">
-              {filteredAppointments.length > 0 ? (
-                filteredAppointments.map((appointment) => (
-                  <div 
-                    key={appointment.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border pb-4 last:border-0 last:pb-0"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primary/10 text-primary">
-                        {appointment.clientName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-sm">{appointment.clientName}</h4>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-sm text-muted-foreground">
-                          <span>{appointment.time}</span>
-                          <span className="hidden sm:inline">•</span>
-                          <span>{appointment.service}</span>
-                          <span className="hidden sm:inline">•</span>
-                          <span>R$ {appointment.price}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 mt-2 sm:mt-0">
-                      <span className={`text-xs rounded-full px-2 py-1 ${getStatusBadgeClass(appointment.status)}`}>
-                        {getStatusText(appointment.status)}
-                      </span>
-                      <Button variant="ghost" size="sm">
-                        <ChevronDown size={16} />
-                      </Button>
+        
+        <div className="grid gap-4">
+          {agendamentosFiltrados.map((agendamento) => (
+            <Card key={agendamento.id} className="overflow-hidden">
+              <div className={`w-1 h-full absolute left-0 ${
+                agendamento.status === AppointmentStatus.CONFIRMED 
+                  ? "bg-green-500" 
+                  : agendamento.status === AppointmentStatus.PENDING 
+                  ? "bg-yellow-500" 
+                  : "bg-red-500"
+              }`} />
+              
+              <CardHeader className="pb-2">
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-muted-foreground" />
+                    <CardTitle className="text-lg">{agendamento.horario}</CardTitle>
+                  </div>
+                  {renderStatusBadge(agendamento.status)}
+                </div>
+              </CardHeader>
+              
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-medium">{agendamento.cliente}</span>
+                  </div>
+                  
+                  <div className="flex justify-between text-sm">
+                    <span>{agendamento.servico}</span>
+                    <div className="flex gap-2">
+                      <span className="text-muted-foreground">{agendamento.duracao}</span>
+                      <span className="font-medium">{agendamento.valor}</span>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="text-center py-6 text-muted-foreground">
-                  Nenhum agendamento encontrado
+                  
+                  <div className="flex justify-end gap-2 pt-2">
+                    <Button variant="outline" size="sm">Reagendar</Button>
+                    <Button variant="default" size="sm">Detalhes</Button>
+                  </div>
                 </div>
-              )}
+              </CardContent>
+            </Card>
+          ))}
+          
+          {agendamentosFiltrados.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Nenhum agendamento encontrado.</p>
             </div>
-          </CardContent>
-        </Card>
+          )}
+        </div>
       </div>
     </BarberDashboardLayout>
   );

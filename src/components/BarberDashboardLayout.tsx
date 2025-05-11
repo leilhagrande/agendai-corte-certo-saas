@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Calendar, 
@@ -99,13 +98,13 @@ const BarberDashboardLayout: React.FC<BarberDashboardLayoutProps> = ({ children 
   if (!isBarber) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
+        <label className="text-center">
           <h1 className="text-2xl font-bold mb-4">Acesso Restrito</h1>
           <p className="mb-6">Esta área é reservada para barbeiros.</p>
           <Button asChild>
             <Link to="/">Voltar para Home</Link>
           </Button>
-        </div>
+        </label>
       </div>
     );
   }

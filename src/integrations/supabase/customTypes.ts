@@ -3,8 +3,17 @@ import { Database } from "@/integrations/supabase/types";
 import { User as AuthUser } from "@supabase/supabase-js";
 import { UserRole } from "@/types";
 
-// Tipos da tabela profiles
-export type Profile = Database['public']['Tables']['profiles']['Row'];
+// Verifica se a estrutura da tabela 'profiles' existe
+// Se não existir na estrutura do banco, cria um tipo genérico
+export type Profile = Database['public']['Tables'] extends { profiles: infer P }
+  ? P['Row']
+  : {
+      id: string;
+      user_id: string;
+      name?: string;
+      avatar_url?: string;
+      created_at?: string;
+    };
 
 // Tipo base de usuário autenticado
 export type User = AuthUser & {

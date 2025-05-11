@@ -74,10 +74,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (foundUser) {
         // Remover senha antes de armazenar no estado
         const { password, ...userWithoutPassword } = foundUser;
-        setUser(userWithoutPassword);
+        
+        // Convert the user object to match User type from Supabase
+        const supabaseFormattedUser: User = {
+          ...userWithoutPassword,
+          id: userWithoutPassword.id,
+          app_metadata: {},
+          user_metadata: {
+            name: userWithoutPassword.name,
+          },
+          aud: "authenticated",
+          created_at: new Date().toISOString()
+        };
+        
+        setUser(supabaseFormattedUser);
         
         // Salvar no localStorage
-        localStorage.setItem("agendai_user", JSON.stringify(userWithoutPassword));
+        localStorage.setItem("agendai_user", JSON.stringify(supabaseFormattedUser));
         localStorage.setItem("agendai_authenticated", "true");
         
         toast.success("Login realizado com sucesso!");
@@ -161,9 +174,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Login automático após registro
       const { password: _, ...userWithoutPassword } = newUser;
-      setUser(userWithoutPassword);
       
-      localStorage.setItem("agendai_user", JSON.stringify(userWithoutPassword));
+      // Convert the user object to match User type from Supabase
+      const supabaseFormattedUser: User = {
+        ...userWithoutPassword,
+        id: userWithoutPassword.id,
+        app_metadata: {},
+        user_metadata: {
+          name: userWithoutPassword.name,
+        },
+        aud: "authenticated",
+        created_at: new Date().toISOString()
+      };
+      
+      setUser(supabaseFormattedUser);
+      
+      localStorage.setItem("agendai_user", JSON.stringify(supabaseFormattedUser));
       localStorage.setItem("agendai_authenticated", "true");
       
       toast.success("Cadastro realizado com sucesso!");

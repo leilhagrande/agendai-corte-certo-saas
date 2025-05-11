@@ -19,19 +19,47 @@ jobs:
       - name: Configurar token para permissões adicionais
         run: |
           git remote set-url origin https://leilhagrande:${{ secrets.PAT_TOKEN }}@github.com/leilhagrande/agendai-corte-certo-saas.git
+          git fetch --unshallow
+          git checkout main
 
       - name: Aplicar mudanças
         run: |
-          # Adicionar arquivos
+          # Criar ou atualizar o arquivo de workflow update-types.yml manualmente
           mkdir -p .github/workflows
-          echo 'name: Update Supabase Types\n\non:\n  push:\n    branches: [main]\n  workflow_dispatch:\n\njobs:\n  update-types:\n    runs-on: ubuntu-latest\n\n    steps:\n      - name: Checkout do código\n        uses: actions/checkout@v3\n\n      - name: Gerar tipos do Supabase\n        run: supabase gen types typescript --schema public > ./integrations/supabase/types.ts\n\n      - name: Commit e Push\n        run: |\n          git add ./integrations/supabase/types.ts\n          git commit -m "chore: update supabase types"\n          git push' > .github/workflows/update-types.yml
+          echo 'name: Update Supabase Types
 
-          mkdir -p .husky
-          echo '#!/bin/sh\n. \"$(dirname \"$0\")/_/husky.sh\"\n\nnpm run generate:types && git add ./integrations/supabase/types.ts' > .husky/pre-commit
-          chmod +x .husky/pre-commit
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  update-types:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Gerar tipos do Supabase
+        run: supabase gen types typescript --schema public > ./integrations/supabase/types.ts
+
+      - name: Commit e Push
+        run: |
+          git add ./integrations/supabase/types.ts
+          git commit -m "chore: update supabase types"
+          git push' > .github/workflows/update-types.yml
 
           # Atualizar package.json
           jq '.scripts["generate:types"] = "supabase gen types typescript --schema public > ./integrations/supabase/types.ts"' package.json > package-temp.json && mv package-temp.json package.json
+
+          # Configurar pre-commit
+          mkdir -p .husky
+          echo '#!/bin/sh
+          . "$(dirname "$0")/_/husky.sh"
+
+          npm run generate:types && git add ./integrations/supabase/types.ts' > .husky/pre-commit
+          chmod +x .husky/pre-commit
 
           # Commit e push
           git add .

@@ -13,11 +13,31 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Gerar tipos do Supabase
-        run: supabase gen types typescript --schema public > ./integrations/supabase/types.ts
+      - name: Configurar usuário Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit e Push
+      - name: Criar diretório para tipos Supabase
+        run: mkdir -p ./integrations/supabase/
+
+      - name: Gerar tipos do Supabase
+        run: |
+          supabase gen types typescript --schema public > ./integrations/supabase/types.ts
+          # Para múltiplos schemas ou project-ref:
+          # supabase gen types typescript --project-ref YOUR_PROJECT_REF --schema public,custom > ./integrations/supabase/types.ts
+
+      - name: Verificar alterações
+        id: check_changes
         run: |
           git add ./integrations/supabase/types.ts
+          if git diff --cached --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit e Push (se houver alterações)
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
           git commit -m "chore: update supabase types"
           git push

@@ -5,8 +5,8 @@ import { UserRole } from "@/types";
 
 // Verifica se a estrutura da tabela 'profiles' existe
 // Se não existir na estrutura do banco, cria um tipo genérico
-export type Profile = Database['public']['Tables']['profiles'] extends { Row: infer R }
-  ? R
+export type Profile = Database['public']['Tables'] extends { profiles: infer P }
+  ? P['Row']
   : {
       id: string;
       user_id: string;

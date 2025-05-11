@@ -1,1 +1,35 @@
+name: Apply Changes
 
+on:
+  workflow_dispatch:
+
+jobs:
+  apply-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name "GitHub Copilot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Aplicar mudanças
+        run: |
+          # Adicionar arquivos
+          mkdir -p .github/workflows
+          echo 'name: Update Supabase Types\n\non:\n  push:\n    branches: [main]\n  workflow_dispatch:\n\njobs:\n  update-types:\n    runs-on: ubuntu-latest\n\n    steps:\n      - name: Checkout do código\n        uses: actions/checkout@v3\n\n      - name: Instalar Node.js\n        uses: actions/setup-node@v3\n        with:\n          node-version: 18\n\n      - name: Instalar dependências\n        run: npm install\n\n      - name: Instalar Supabase CLI\n        run: npm install -g supabase\n\n      - name: Gerar Tipos do Supabase\n        run: npm run generate:types\n\n      - name: Commit e push se houver mudanças\n        run: |\n          git config --global user.name \"github-actions[bot]\"\n          git config --global user.email \"github-actions[bot]@users.noreply.github.com\"\n          git add ./integrations/supabase/types.ts\n          git commit -m \"chore: update Supabase types\" || echo \"Sem mudanças\"\n          git push' > .github/workflows/update-types.yml
+
+          mkdir -p .husky
+          echo '#!/bin/sh\n. \"$(dirname \"$0\")/_/husky.sh\"\n\nnpm run generate:types && git add ./integrations/supabase/types.ts' > .husky/pre-commit
+          chmod +x .husky/pre-commit
+
+          # Atualizar package.json
+          jq '.scripts[\"generate:types\"] = \"supabase gen types typescript --schema public > ./integrations/supabase/types.ts\"' package.json > package-temp.json && mv package-temp.json package.json
+
+          # Commit e push
+          git add .
+          git commit -m "chore: Add workflows and pre-commit setup"
+          git push

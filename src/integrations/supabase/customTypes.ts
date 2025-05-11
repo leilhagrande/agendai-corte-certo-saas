@@ -3,10 +3,12 @@ import { Database } from "@/integrations/supabase/types";
 import { User as AuthUser } from "@supabase/supabase-js";
 import { UserRole } from "@/types";
 
-// Verifica se a estrutura da tabela 'profiles' existe
-// Se não existir na estrutura do banco, cria um tipo genérico
-export type Profile = Database['public']['Tables'] extends { profiles: infer P }
-  ? P['Row']
+// Tipo auxiliar para extrair 'Row' com segurança
+type ExtractRow<T> = T extends { Row: infer R } ? R : never;
+
+// Verifica se a tabela 'profiles' existe e extrai a linha
+export type Profile = 'profiles' extends keyof Database['public']['Tables']
+  ? ExtractRow<Database['public']['Tables']['profiles']>
   : {
       id: string;
       user_id: string;

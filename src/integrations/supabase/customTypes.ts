@@ -6,9 +6,12 @@ import { UserRole } from "@/types";
 // Tipo auxiliar para extrair 'Row' com segurança
 type ExtractRow<T> = T extends { Row: infer R } ? R : never;
 
-// Verifica se a tabela 'profiles' existe e extrai a linha
-export type Profile = 'profiles' extends keyof Database['public']['Tables']
-  ? ExtractRow<Database['public']['Tables']['profiles']>
+// Tabelas disponíveis
+type Tables = Database['public']['Tables'];
+
+// Se a tabela 'profiles' existir, extrai o tipo Row, senão usa fallback
+export type Profile = 'profiles' extends keyof Tables
+  ? ExtractRow<Tables['profiles']>
   : {
       id: string;
       user_id: string;

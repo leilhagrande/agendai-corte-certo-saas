@@ -18,7 +18,7 @@ jobs:
           curl -fsSL https://deno.land/install.sh | sh
           export DENO_INSTALL="$HOME/.deno"
           export PATH="$DENO_INSTALL/bin:$PATH"
-          deno install -A -r -n supabase https://deno.land/x/supabase_cli/main.ts
+          deno install --allow-read --allow-write --allow-net --allow-env --allow-run --unstable --global -r -n supabase https://deno.land/x/supabase_cli/main.ts
 
       - name: Configurar usuário Git
         run: |

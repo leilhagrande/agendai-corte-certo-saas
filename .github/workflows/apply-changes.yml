@@ -1,32 +1,4 @@
-name: Apply Changes
-
-on:
-  workflow_dispatch:
-
-jobs:
-  apply-changes:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
-
-      - name: Configurar Git
-        run: |
-          git config --global user.name "GitHub Copilot"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Configurar token para permissões adicionais
-        run: |
-          git remote set-url origin https://leilhagrande:${{ secrets.PAT_TOKEN }}@github.com/leilhagrande/agendai-corte-certo-saas.git
-          git fetch --unshallow
-          git checkout main
-
-      - name: Aplicar mudanças
-        run: |
-          # Criar ou atualizar o arquivo de workflow update-types.yml manualmente
-          mkdir -p .github/workflows
-          echo 'name: Update Supabase Types
+name: Update Supabase Types
 
 on:
   push:
@@ -48,20 +20,4 @@ jobs:
         run: |
           git add ./integrations/supabase/types.ts
           git commit -m "chore: update supabase types"
-          git push' > .github/workflows/update-types.yml
-
-          # Atualizar package.json
-          jq '.scripts["generate:types"] = "supabase gen types typescript --schema public > ./integrations/supabase/types.ts"' package.json > package-temp.json && mv package-temp.json package.json
-
-          # Configurar pre-commit
-          mkdir -p .husky
-          echo '#!/bin/sh
-          . "$(dirname "$0")/_/husky.sh"
-
-          npm run generate:types && git add ./integrations/supabase/types.ts' > .husky/pre-commit
-          chmod +x .husky/pre-commit
-
-          # Commit e push
-          git add .
-          git commit -m "chore: Add workflows and pre-commit setup"
           git push

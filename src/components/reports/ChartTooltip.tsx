@@ -2,7 +2,6 @@
 import React from 'react';
 import { TooltipProps } from 'recharts';
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
-import { ChartTooltipProps } from '@/types';
 
 const ChartTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameType>) => {
   if (active && payload && payload.length) {

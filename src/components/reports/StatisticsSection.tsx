@@ -24,12 +24,12 @@ const StatisticsSection = ({
       />
       <StatisticCard 
         title="Receita Total" 
-        value={`R$ ${totalReceita}`}
+        value={`R$ ${totalReceita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
         description="+8% comparado à semana anterior"
       />
       <StatisticCard 
         title="Ticket Médio" 
-        value={`R$ ${ticketMedio.toFixed(2)}`}
+        value={`R$ ${ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
         description="-2% comparado à semana anterior"
       />
       <StatisticCard 

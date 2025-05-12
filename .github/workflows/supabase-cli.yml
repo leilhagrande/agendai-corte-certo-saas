@@ -1,1 +1,38 @@
+# .github/workflows/supabase-cli.yml
+
+name: Instalar Supabase CLI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  install_supabase_cli:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v2
+
+      - name: Instalar Supabase CLI
+        run: |
+          ARCH=$(uname -m)
+          if [ "$ARCH" == "x86_64" ]; then
+            echo "Baixando Supabase CLI para x86_64"
+            curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o supabase
+          elif [ "$ARCH" == "aarch64" ]; then
+            echo "Baixando Supabase CLI para ARM64"
+            curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-arm64 -o supabase
+          else
+            echo "Arquitetura não suportada: $ARCH"
+            exit 1
+          fi
+
+          chmod +x supabase
+          sudo mv supabase /usr/local/bin/supabase
+
+          echo "Verificando instalação..."
+          supabase --version
 

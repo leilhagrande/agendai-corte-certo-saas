@@ -18,10 +18,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Instalar Supabase CLI
-        run: |
-          npm install -g supabase
-
       - name: Configurar usuário Git
         run: |
           git config user.name "github-actions[bot]"
@@ -32,7 +28,7 @@ jobs:
 
       - name: Gerar tipos do Supabase
         run: |
-          supabase gen types typescript --schema public > ./integrations/supabase/types.ts
+          npx supabase gen types typescript --schema public > ./integrations/supabase/types.ts
 
       - name: Verificar alterações
         id: check_changes

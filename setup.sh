@@ -1,32 +1,39 @@
 #!/bin/bash
 
-echo "🚀 Iniciando configuração do projeto AgendAi..."
+echo "🔧 Iniciando configuração automática do projeto AgendAi - Corte Certo..."
 
-# 1. Verifica se Node.js está instalado
-if ! command -v node &> /dev/null; then
-  echo "❌ Node.js não está instalado. Instale-o antes de continuar."
-  exit 1
-fi
-
-# 2. Verifica se Supabase CLI está instalado
-if ! command -v supabase &> /dev/null; then
-  echo "📦 Instalando Supabase CLI..."
-  wget https://github.com/supabase/cli/releases/download/v1.157.2/supabase_1.157.2_linux_amd64.tar.gz
-  tar -xvzf supabase_1.157.2_linux_amd64.tar.gz
-  sudo mv supabase /usr/local/bin
+# Passo 1: Instalar dependências Node
+if [ -f package-lock.json ]; then
+  echo "📦 Instalando dependências com npm..."
+  npm install
 else
-  echo "✅ Supabase CLI já instalado"
+  echo "📦 Instalando dependências com yarn..."
+  yarn install
 fi
 
-# 3. Instala dependências do projeto
-echo "📦 Instalando dependências do projeto..."
-npm install
+# Passo 2: Instalar Supabase CLI se não existir
+if ! command -v supabase &> /dev/null
+then
+  echo "📥 Baixando e instalando o Supabase CLI..."
+  curl -L https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-x64.tar.gz | tar -xz
+  sudo mv supabase /usr/local/bin/
+else
+  echo "✅ Supabase CLI já instalado."
+fi
 
-# 4. Inicia Supabase local
-echo "⚙️ Inicializando Supabase local..."
+# Passo 3: Inicializar Supabase local (caso ainda não esteja rodando)
+if [ ! -d ".supabase" ]; then
+  echo "🚀 Inicializando Supabase local..."
+  supabase init
+else
+  echo "✅ Supabase local já configurado."
+fi
+
+# Passo 4: Rodar Supabase localmente
+echo "▶️ Iniciando Supabase local..."
 supabase start
 
-# 5. Mensagem final
-echo "✅ Projeto AgendAi pronto para uso local!"
-echo "Acesse: http://localhost:3000 ou conforme configurado"
+# Passo 5: Mensagem final
+echo "✅ Projeto configurado com sucesso!"
+echo "Acesse seu projeto localmente e comece a desenvolver."
 

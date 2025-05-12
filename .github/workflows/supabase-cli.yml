@@ -14,12 +14,22 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v2
 
-      - name: Baixar Supabase CLI
+      - name: Baixar e instalar o Supabase CLI
         run: |
           echo "Baixando o Supabase CLI..."
+          # Baixar o arquivo .tar.gz
           curl -sL https://github.com/supabase/cli/releases/download/v1.16.1/supabase_1.16.1_linux_amd64.tar.gz -o supabase-cli.tar.gz
+          
+          # Garantir que o arquivo supabase não exista antes de extrair
+          rm -f /usr/local/bin/supabase
+
+          # Extrair o arquivo
           tar -xzf supabase-cli.tar.gz
+          
+          # Tornar o arquivo executável
           chmod +x ./supabase-cli
+          
+          # Mover o arquivo extraído para o diretório bin
           mv ./supabase-cli /usr/local/bin/supabase
 
       - name: Verificar versão do Supabase CLI

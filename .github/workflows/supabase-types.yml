@@ -11,9 +11,11 @@ jobs:
       - name: Checar código
         uses: actions/checkout@v3
 
-      - name: Instalar Supabase CLI (seguro)
+      - name: Baixar e instalar Supabase CLI
         run: |
-          curl -sSf https://raw.githubusercontent.com/supabase/cli/main/install.sh | sh -s -- -b /usr/local/bin
+          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o supabase
+          chmod +x supabase
+          sudo mv supabase /usr/local/bin/supabase
           supabase --version
 
       - name: Criar pasta se necessário
@@ -21,4 +23,3 @@ jobs:
 
       - name: Gerar types do Supabase
         run: supabase gen types typescript --project-id asjntdjqbvylbohmico --schema public > ./integrations/supabase/types.ts
-

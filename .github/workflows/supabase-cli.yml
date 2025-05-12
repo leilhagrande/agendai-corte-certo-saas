@@ -17,8 +17,10 @@ jobs:
       - name: Baixar e instalar Supabase CLI
         run: |
           ARCH=$(uname -m)
-          echo "Baixando Supabase CLI versão 1.154.2 para $ARCH"
-          curl -sL https://github.com/supabase/cli/releases/download/v1.154.2/supabase_1.154.2_linux_${ARCH}.tar.gz | tar -xz
+          VERSION=v1.154.2
+          FILE=supabase_${VERSION}_linux_${ARCH}.tar.gz
+          wget https://github.com/supabase/cli/releases/download/${VERSION}/${FILE}
+          tar -xzf ${FILE}
           sudo mv supabase /usr/local/bin/supabase
 
       - name: Verificar versão do Supabase CLI

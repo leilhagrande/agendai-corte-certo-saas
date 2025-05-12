@@ -1,39 +1,28 @@
 #!/bin/bash
 
-echo "🔧 Iniciando configuração automática do projeto AgendAi - Corte Certo..."
+echo "🚀 Iniciando configuração do projeto AgendAi Corte Certo..."
 
-# Passo 1: Instalar dependências Node
-if [ -f package-lock.json ]; then
-  echo "📦 Instalando dependências com npm..."
-  npm install
-else
-  echo "📦 Instalando dependências com yarn..."
-  yarn install
-fi
+# Parar o script em caso de erro
+set -e
 
-# Passo 2: Instalar Supabase CLI se não existir
-if ! command -v supabase &> /dev/null
-then
-  echo "📥 Baixando e instalando o Supabase CLI..."
+# Verifica se o Supabase CLI já está instalado
+if ! command -v supabase &> /dev/null; then
+  echo "⬇️ Baixando e instalando o Supabase CLI..."
   curl -L https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-x64.tar.gz | tar -xz
-  sudo mv supabase /usr/local/bin/
+  sudo mv supabase /usr/local/bin/supabase
 else
-  echo "✅ Supabase CLI já instalado."
+  echo "✅ Supabase CLI já está instalado."
 fi
 
-# Passo 3: Inicializar Supabase local (caso ainda não esteja rodando)
-if [ ! -d ".supabase" ]; then
-  echo "🚀 Inicializando Supabase local..."
-  supabase init
-else
-  echo "✅ Supabase local já configurado."
+# Verifica se Docker está instalado
+if ! command -v docker &> /dev/null; then
+  echo "❌ Docker não encontrado. Instale o Docker antes de continuar: https://docs.docker.com/get-docker/"
+  exit 1
 fi
 
-# Passo 4: Rodar Supabase localmente
-echo "▶️ Iniciando Supabase local..."
+# Inicializa Supabase local
+echo "🔧 Iniciando Supabase local..."
 supabase start
 
-# Passo 5: Mensagem final
-echo "✅ Projeto configurado com sucesso!"
-echo "Acesse seu projeto localmente e comece a desenvolver."
-
+# Finaliza
+echo "✅ Ambiente configurado com sucesso!"

@@ -13,10 +13,13 @@ jobs:
 
       - name: Instalar Supabase CLI (Linux)
         run: |
-          rm -rf supabase  # Remove diretório que conflita
+          # Baixar e instalar o Supabase CLI
           curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o supabase-cli
           chmod +x supabase-cli
           sudo mv supabase-cli /usr/local/bin/supabase
+          
+          # Verificar a instalação
+          supabase --version
 
       - name: Criar diretório de tipos (caso não exista)
         run: mkdir -p ./integrations/supabase

@@ -26,18 +26,24 @@ jobs:
 
       - name: Baixar Supabase CLI com versão confiável
         run: |
-          # Baixar o Supabase CLI de forma confiável com a versão mais recente
+          echo "Baixando o Supabase CLI..."
           curl -L https://github.com/supabase/cli/releases/download/v1.0.1/supabase-cli-linux-amd64 -o ./supabase-cli
+          
+          # Verificar se o arquivo foi baixado corretamente
+          if [ ! -f ./supabase-cli ]; then
+            echo "Erro: Arquivo supabase-cli não foi baixado corretamente."
+            exit 1
+          fi
 
           # Verificar tipo de arquivo logo após o download
           file ./supabase-cli  # Verifica se é um binário executável
 
           # Mostrar o conteúdo das primeiras linhas para inspeção
+          echo "Exibindo as primeiras 10 linhas do arquivo para diagnóstico:"
           head -n 10 ./supabase-cli  # Exibe as primeiras 10 linhas do arquivo para diagnóstico
 
       - name: Tornar Supabase CLI executável
         run: |
-          # Caso o arquivo seja válido
           chmod +x ./supabase-cli
           sudo mv ./supabase-cli /usr/local/bin/supabase
 

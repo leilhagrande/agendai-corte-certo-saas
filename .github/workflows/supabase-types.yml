@@ -13,9 +13,25 @@ jobs:
       - name: Checar código-fonte
         uses: actions/checkout@v2
 
-      - name: Baixar e instalar Supabase CLI
+      - name: Verificar arquitetura do sistema
         run: |
-          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o ./supabase-cli
+          echo "Arquitetura do sistema: $(uname -m)"  # Verifica a arquitetura (x86_64 ou ARM)
+
+      - name: Baixar Supabase CLI
+        run: |
+          # Baixa a versão adequada do Supabase CLI dependendo da arquitetura
+          if [ "$(uname -m)" == "x86_64" ]; then
+            curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o ./supabase-cli
+          elif [ "$(uname -m)" == "aarch64" ]; then
+            curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-arm64 -o ./supabase-cli
+          else
+            echo "Arquitetura não suportada: $(uname -m)"
+            exit 1
+          fi
+          ls -lh ./supabase-cli  # Verificar o arquivo baixado (tamanho e tipo)
+
+      - name: Tornar Supabase CLI executável
+        run: |
           chmod +x ./supabase-cli
           sudo mv ./supabase-cli /usr/local/bin/supabase
 

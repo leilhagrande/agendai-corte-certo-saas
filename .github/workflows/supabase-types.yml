@@ -17,6 +17,13 @@ jobs:
         run: |
           echo "Arquitetura do sistema: $(uname -m)"  # Verifica a arquitetura (x86_64 ou ARM)
 
+      - name: Excluir qualquer arquivo supabase existente
+        run: |
+          if [ -f /usr/local/bin/supabase ]; then
+            echo "Excluindo arquivo supabase existente"
+            sudo rm /usr/local/bin/supabase
+          fi
+
       - name: Baixar Supabase CLI
         run: |
           # Baixa a versão adequada do Supabase CLI dependendo da arquitetura
@@ -29,10 +36,10 @@ jobs:
             exit 1
           fi
           
-          # Verificar o conteúdo do arquivo
-          file ./supabase-cli  # Verifica se é um binário executável
+          # Verificar o tipo do arquivo baixado
+          file ./supabase-cli  # Deve retornar algo como 'ELF 64-bit LSB executable'
 
-          # Mostrar detalhes sobre o arquivo baixado
+          # Mostrar detalhes sobre o arquivo
           ls -lh ./supabase-cli  # Verificar o tamanho e tipo do arquivo
 
       - name: Tornar Supabase CLI executável

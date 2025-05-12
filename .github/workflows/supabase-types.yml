@@ -44,6 +44,9 @@ jobs:
           # Mostrar detalhes sobre o arquivo
           ls -lh ./supabase-cli  # Verificar o tamanho e tipo do arquivo
 
+          # Exibir as primeiras linhas do arquivo para diagnóstico
+          head -n 10 ./supabase-cli  # Verificar as primeiras 10 linhas do arquivo
+
       - name: Tornar Supabase CLI executável
         run: |
           chmod +x ./supabase-cli

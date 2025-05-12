@@ -28,7 +28,12 @@ jobs:
             echo "Arquitetura não suportada: $(uname -m)"
             exit 1
           fi
-          ls -lh ./supabase-cli  # Verificar o arquivo baixado (tamanho e tipo)
+          
+          # Verificar o conteúdo do arquivo
+          file ./supabase-cli  # Verifica se é um binário executável
+
+          # Mostrar detalhes sobre o arquivo baixado
+          ls -lh ./supabase-cli  # Verificar o tamanho e tipo do arquivo
 
       - name: Tornar Supabase CLI executável
         run: |

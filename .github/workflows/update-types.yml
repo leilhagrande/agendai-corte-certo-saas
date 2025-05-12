@@ -13,13 +13,13 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Instalar Node.js e NPM
+      - name: Instalar Node.js e NPM (versão 18)
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Instalar CLI do Supabase
-        run: npm install -g supabase
+        run: npx supabase@latest --help
 
       - name: Configurar usuário Git
         run: |
@@ -31,9 +31,9 @@ jobs:
 
       - name: Gerar tipos do Supabase
         run: |
-          supabase gen types typescript --schema public > ./integrations/supabase/types.ts
+          npx supabase gen types typescript --schema public > ./integrations/supabase/types.ts
           # Para múltiplos schemas ou project-ref:
-          # supabase gen types typescript --project-ref YOUR_PROJECT_REF --schema public,custom > ./integrations/supabase/types.ts
+          # npx supabase gen types typescript --project-ref YOUR_PROJECT_REF --schema public,custom > ./integrations/supabase/types.ts
 
       - name: Verificar alterações
         id: check_changes

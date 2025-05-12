@@ -13,25 +13,25 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Instalar Supabase CLI
+      - name: Configurar usuário Git
         run: |
-          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 > supabase
-          chmod +x supabase
-          sudo mv supabase /usr/local/bin/supabase
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Criar diretório para tipos Supabase
         run: mkdir -p ./integrations/supabase/
 
+      - name: Instalar Supabase CLI
+        run: |
+          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o supabase-cli
+          chmod +x supabase-cli
+          sudo mv supabase-cli /usr/local/bin/supabase
+
       - name: Gerar tipos do Supabase
         env:
-          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
-          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          supabase gen types typescript \
-            --project-id $SUPABASE_PROJECT_ID \
-            --schema public \
-            --db-url "https://$SUPABASE_PROJECT_ID.supabase.co" \
-            --password $SUPABASE_API_KEY > ./integrations/supabase/types.ts
+          supabase gen types typescript --project-id asjntdjqbvylbohmico --schema public > ./integrations/supabase/types.ts
 
       - name: Verificar alterações
         id: check_changes
@@ -45,7 +45,5 @@ jobs:
       - name: Commit e Push (se houver alterações)
         if: steps.check_changes.outputs.changed == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: update supabase types"
           git push

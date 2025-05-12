@@ -1,1 +1,24 @@
+name: Gerar Types do Supabase
+
+on:
+  workflow_dispatch:
+
+jobs:
+  gerar-types:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar código
+        uses: actions/checkout@v3
+
+      - name: Instalar Supabase CLI (seguro)
+        run: |
+          curl -sSf https://raw.githubusercontent.com/supabase/cli/main/install.sh | sh -s -- -b /usr/local/bin
+          supabase --version
+
+      - name: Criar pasta se necessário
+        run: mkdir -p ./integrations/supabase
+
+      - name: Gerar types do Supabase
+        run: supabase gen types typescript --project-id asjntdjqbvylbohmico --schema public > ./integrations/supabase/types.ts
 

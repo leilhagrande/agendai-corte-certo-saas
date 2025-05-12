@@ -1,28 +1,47 @@
-name: Supabase Types
+name: Update Supabase Types
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  generate-types:
+  update-types:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Garantir que 'supabase' não seja um diretório
-        run: |
-          if [ -d "supabase" ]; then rm -rf supabase; fi
-
-      - name: Instalar Supabase CLI
+      - name: Instalar Supabase CLI (Linux)
         run: |
           curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o supabase
           chmod +x supabase
           sudo mv supabase /usr/local/bin/supabase
 
+      - name: Configurar Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Criar pasta para os tipos gerados
+        run: mkdir -p ./integrations/supabase
+
       - name: Gerar tipos do Supabase
         run: |
           supabase gen types typescript --project-id asjntdjqbvylbohmico --schema public > ./integrations/supabase/types.ts
+
+      - name: Verificar alterações
+        id: check_changes
+        run: |
+          git add ./integrations/supabase/types.ts
+          if git diff --cached --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit e Push (se houver alterações)
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git commit -m "chore: update supabase types"
+          git push

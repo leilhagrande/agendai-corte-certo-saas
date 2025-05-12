@@ -13,25 +13,25 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Usar Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Configurar variáveis de ambiente
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      - name: Instalar Supabase CLI
         run: |
-          echo "SUPABASE_ACCESS_TOKEN configurado."
+          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 > supabase
+          chmod +x supabase
+          sudo mv supabase /usr/local/bin/supabase
 
       - name: Criar diretório para tipos Supabase
         run: mkdir -p ./integrations/supabase/
 
       - name: Gerar tipos do Supabase
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
         run: |
-          npx supabase gen types typescript --project-id aszjntdjqbvylbohmico --schema public > ./integrations/supabase/types.ts
+          supabase gen types typescript \
+            --project-id $SUPABASE_PROJECT_ID \
+            --schema public \
+            --db-url "https://$SUPABASE_PROJECT_ID.supabase.co" \
+            --password $SUPABASE_API_KEY > ./integrations/supabase/types.ts
 
       - name: Verificar alterações
         id: check_changes
@@ -45,5 +45,7 @@ jobs:
       - name: Commit e Push (se houver alterações)
         if: steps.check_changes.outputs.changed == 'true'
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore: update supabase types"
           git push

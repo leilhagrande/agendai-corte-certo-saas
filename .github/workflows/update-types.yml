@@ -18,15 +18,18 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Configurar usuário Git
+      - name: Configurar variáveis de ambiente
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "SUPABASE_ACCESS_TOKEN configurado."
 
       - name: Criar diretório para tipos Supabase
         run: mkdir -p ./integrations/supabase/
 
       - name: Gerar tipos do Supabase
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
           npx supabase gen types typescript --project-id aszjntdjqbvylbohmico --schema public > ./integrations/supabase/types.ts
 

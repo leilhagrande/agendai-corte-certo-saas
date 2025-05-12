@@ -11,17 +11,18 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v3
 
-      - name: Instalar Supabase CLI (Linux)
+      - name: Baixar e instalar o Supabase CLI (Linux)
         run: |
-          # Baixar e instalar o Supabase CLI
-          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o supabase-cli
-          chmod +x supabase-cli
-          sudo mv supabase-cli /usr/local/bin/supabase
-          
-          # Verificar a instalação
+          # Baixar o Supabase CLI
+          curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o /usr/local/bin/supabase
+
+          # Garantir que o arquivo tenha permissão de execução
+          sudo chmod +x /usr/local/bin/supabase
+
+          # Verificar se o Supabase CLI está instalado corretamente
           supabase --version
 
-      - name: Criar diretório de tipos (caso não exista)
+      - name: Criar diretório para tipos (caso não exista)
         run: mkdir -p ./integrations/supabase
 
       - name: Gerar tipos TypeScript do Supabase

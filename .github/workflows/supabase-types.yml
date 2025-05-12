@@ -37,18 +37,16 @@ jobs:
             echo "Arquitetura não suportada: $(uname -m)"
             exit 1
           fi
-          
-          # Verificar se o arquivo não é HTML e confirmar o tipo
+
+          # Verificar tipo de arquivo logo após o download
           file ./supabase-cli  # Verifica se é um binário executável
 
-          # Mostrar detalhes sobre o arquivo
-          ls -lh ./supabase-cli  # Verificar o tamanho e tipo do arquivo
-
-          # Exibir as primeiras linhas do arquivo para diagnóstico
-          head -n 10 ./supabase-cli  # Verificar as primeiras 10 linhas do arquivo
+          # Mostrar o conteúdo das primeiras linhas para inspeção
+          head -n 10 ./supabase-cli  # Exibe as primeiras 10 linhas do arquivo para diagnóstico
 
       - name: Tornar Supabase CLI executável
         run: |
+          # Caso o arquivo seja válido
           chmod +x ./supabase-cli
           sudo mv ./supabase-cli /usr/local/bin/supabase
 

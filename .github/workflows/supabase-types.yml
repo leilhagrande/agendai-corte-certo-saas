@@ -24,20 +24,22 @@ jobs:
             sudo rm /usr/local/bin/supabase
           fi
 
-      - name: Baixar Supabase CLI
+      - name: Baixar Supabase CLI com curl detalhado
         run: |
-          # Baixa a versão adequada do Supabase CLI dependendo da arquitetura
+          # Baixar a versão adequada do Supabase CLI dependendo da arquitetura
           if [ "$(uname -m)" == "x86_64" ]; then
-            curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o ./supabase-cli
+            echo "Baixando supabase-cli para arquitetura x86_64"
+            curl -v -L https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-amd64 -o ./supabase-cli
           elif [ "$(uname -m)" == "aarch64" ]; then
-            curl -sL https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-arm64 -o ./supabase-cli
+            echo "Baixando supabase-cli para arquitetura ARM"
+            curl -v -L https://github.com/supabase/cli/releases/latest/download/supabase-cli-linux-arm64 -o ./supabase-cli
           else
             echo "Arquitetura não suportada: $(uname -m)"
             exit 1
           fi
           
-          # Verificar o tipo do arquivo baixado
-          file ./supabase-cli  # Deve retornar algo como 'ELF 64-bit LSB executable'
+          # Verificar se o arquivo não é HTML e confirmar o tipo
+          file ./supabase-cli  # Verifica se é um binário executável
 
           # Mostrar detalhes sobre o arquivo
           ls -lh ./supabase-cli  # Verificar o tamanho e tipo do arquivo

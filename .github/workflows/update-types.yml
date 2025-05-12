@@ -26,9 +26,13 @@ jobs:
       - name: Criar diretório para tipos Supabase
         run: mkdir -p ./integrations/supabase/
 
-      - name: Gerar tipos do Supabase
+      - name: Gerar tipos do Supabase com autenticação
         run: |
-          npx supabase gen types typescript --schema public > ./integrations/supabase/types.ts
+          npx supabase gen types typescript \
+            --project-id ${{ secrets.SUPABASE_PROJECT_ID }} \
+            --schema public \
+            --apikey ${{ secrets.SUPABASE_API_KEY }} \
+            > ./integrations/supabase/types.ts
 
       - name: Verificar alterações
         id: check_changes
